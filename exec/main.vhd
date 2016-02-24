@@ -56,15 +56,16 @@ end component;
 	signal po_01_hex :  STD_LOGIC_VECTOR (10 downto 0);
 	signal po_02_hex :  STD_LOGIC_VECTOR (10 downto 0);
 	
-	signal sw6 : std_logic;
-	signal sw7 : std_logic;
+	signal sw6 : std_logic := '0';
+	signal sw7 : std_logic := '0';
 	
-	signal osw6 : std_logic;
-	signal osw7 : std_logic;	
+	signal osw6 : std_logic := '0';
+	signal osw7 : std_logic := '0';	
+	
+	signal clock : unsigned (31 downto 0) := "00000000000000000000000000000000";
 
 begin
-	sw6<= I_SW(6);
-	sw7<= I_SW(7);
+
 
 			call1 : MainLcdTest 
 			port map (
@@ -79,31 +80,56 @@ begin
 				pi_sw => I_SW,
 				po_hex => po_02_hex
 			);
-	process (sw6,sw7,osw6,osw7) begin
-		if sw7 ='1' and osw7 = '0' then
-			prog<= prog+1;	
-			osw7<='1';
-		end if;
-		if sw7 = '1' and osw6 = '0' then
-			prog<= prog-1;	
-			osw6<='1';
+	process (I_CLK,sw6,sw7,osw6,osw7) begin
+	
+	if rising_edge(I_CLK) then
+
+	end if;
+	end process;
+	
+	process (I_CLK,clock) begin
+		if rising_edge(I_CLK) then
+			clock<=clock+1;
 		end if;
 		
-		osw6<=sw6;
-		osw7<=sw7;
-
+		if(clock=320000000) then clock<="00000000000000000000000000000000"; end if;
+	end process;
+	
+	process (clock,sw6,sw7,osw6,osw7,I_CLK) begin
+		if clock(16)='1' and rising_edge(I_CLK) then	
+		
+			if sw7 ='1' and osw7 = '0' then
+				prog<= prog+1;	
+			end if;
+			if sw6 = '1' and osw6 = '0' then
+				prog<= prog-1;	
+			end if;				
+		
+			osw6<=sw6;
+			osw7<=sw7;
+		end if;
+			
+		if clock(16)='0' and rising_edge(I_CLK) then
+	
+		
+			sw6<= I_SW(6);
+			sw7<= I_SW(7);			
+		end if;
 	end process;
 	
 	process(I_CLK,I_SW, prog, po_01_hex,po_02_hex) begin
-		case (prog) is
-			when "00000001" => O_HEX <= po_01_hex;
+		if rising_edge (I_CLK) then
+			case (prog) is
+				when "00000001" => O_HEX <= po_01_hex;
 
-			when "00000010" => O_HEX <= po_02_hex;
+				when "00000010" => O_HEX <= po_02_hex;
 
- 
-			when others=> O_HEX <= "11111111111";
-		end case;
+	 
+				when others=> O_HEX <= "11111111111";
+			end case;
+			O_LED <= std_logic_vector (prog);
+		end if;
 	end process;
-	O_LED <= std_logic_vector (prog);
+	
 end Behavioral;
 
