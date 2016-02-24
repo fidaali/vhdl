@@ -30,8 +30,6 @@ entity MainDispVgaRate is
 end MainDispVgaRate;
 
 architecture Behavioral of MainDispVgaRate is
-	signal vv : unsigned (15 downto 0)  := (others => '0');
-	signal hv : STD_LOGIC_VECTOR (3 downto 0);
 
 component vga640rate 
     Port ( 
@@ -41,7 +39,6 @@ component vga640rate
 	po_pixon : out STD_LOGIC; -- when 1 display is on time to choose the colors when 0 black pixel only
 	po_h_sync : out STD_LOGIC; -- horizontal retrace signal :: 1 when tracing back to left 
 	po_v_sync : out STD_LOGIC -- vertical retrace signal :: 1 when tracing back top 
-			  
 			  );
 end component;
 
@@ -53,7 +50,7 @@ component m8seg_disp_hex   Port (
 end component;
 
 
-signal  hpix : STD_LOGIC_VECTOR (10 downto 0); -- current line number for display
+signal	hpix : STD_LOGIC_VECTOR (10 downto 0); -- current line number for display
 signal	vpix : STD_LOGIC_VECTOR (10 downto 0); -- current column number for display
 signal	pixon : STD_LOGIC; -- when 1 display is on time to choose the colors when 0 black pixel only
 signal	h_sync : STD_LOGIC; -- horizontal retrace signal :: 1 when tracing back to left 
@@ -90,13 +87,37 @@ begin
 					pi_clk=>pi_clk,
 					pi_value=> o_aff ,
 					po_hex => po_hex
-				);			
+				);	
+
+	
+	process(	v_sync, v_pixon, v_h_sync, v_v_sync,pi_sw, pi_sw) begin
+	
+			case (pi_sw) is
+				when "00000101"=> aff<=c_clk;
+				when "00000001"=> aff<=v_pixon;
+				when "00000011"=> aff<=v_h_sync;
+				when "00000111"=> aff<=v_v_sync;
+
+				when "00001101"=> aff<=c_clk;
+				when "00001001"=> aff<=v_pixon;
+				when "00001011"=> aff<=v_h_sync;
+				when "00001111"=> aff<=v_v_sync;
+				when others => aff <= "00000000000000000000000000000000"  ;
+			end case;	
+
+			if(pi_sw(3) = '0') then
+				o_aff<= aff(15 downto 0);
+			else
+				o_aff<= aff(31 downto 16);
+			end if;	
+			
+	end process;
+	
 
 	process(pi_sw,pi_clk,h_sync,v_sync,
-	 c_clk, c_pixon, c_h_sync, c_v_sync,
-	 v_pixon, v_h_sync, v_v_sync
-	) begin
+	 c_clk, c_pixon, c_h_sync, c_v_sync
 
+	) begin
 
 		if rising_edge(pi_clk) then
 			c_clk<=c_clk+1;
@@ -121,24 +142,7 @@ begin
 			c_clk<="00000000000000000000000000000000";
 		end if;
 
-		case (pi_sw) is
-			when "00000101"=> aff<=c_clk;
-			when "00000001"=> aff<=v_pixon;
-			when "00000011"=> aff<=v_h_sync;
-			when "00000111"=> aff<=v_v_sync;
 
-			when "00001101"=> aff<=c_clk;
-			when "00001001"=> aff<=v_pixon;
-			when "00001011"=> aff<=v_h_sync;
-			when "00001111"=> aff<=v_v_sync;
-			when others => aff <= "00000000000000000000000000000000"  ;
-		end case;	
-
-		if(pi_sw(3) = '0') then
-			o_aff<= aff(15 downto 0);
-		else
-			o_aff<= aff(31 downto 16);
-		end if;
 
 	end process;
 		
