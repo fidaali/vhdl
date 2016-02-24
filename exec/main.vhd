@@ -19,15 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+use IEEE.NUMERIC_STD.ALL;
 
 entity main is
     Port (
@@ -43,8 +35,7 @@ end main;
 
 
 architecture Behavioral of main is
-	signal vv : STD_LOGIC_VECTOR (15 downto 0)  := (others => '0');
-	signal hv : STD_LOGIC_VECTOR (3 downto 0);
+	signal prog : unsigned (7 downto 0)  := "00000000"; 
 	
 component MainLcdTest
     Port ( 
@@ -54,15 +45,46 @@ component MainLcdTest
 	 );
 end component;	
 
+component MainDispVgaRate
+    Port ( 
+	 	pi_clk : in STD_LOGIC ;
+		pi_sw : in  STD_LOGIC_VECTOR (7 downto 0);
+		po_hex : out  STD_LOGIC_VECTOR (10 downto 0) -- 6 bit segments then 4 bit quadrant
+	 );
+end component;
+
 
 begin
+	proces(I_SW) begin
+		if rising_edge(I_SW(7)) then
+			prog<= prog+1;		
+		end;
+		if rising_edge(I_SW(6)) then
+			prog<= prog-1;		
+		end;
 
-	call0 : MainLcdTest 
-		port map (
-			pi_clk => I_CLK,
-			pi_sw => I_SW,
-			po_hex => O_HEX
-			);
-	O_LED <= I_SW;
+	end process;
+	
+	process(I_CLK,I_SW) begin
+		case (prog) is
+			when "00000001" => 
+				call1 : MainLcdTest 
+				port map (
+					pi_clk => I_CLK,
+					pi_sw => I_SW,
+					po_hex => O_HEX
+				);
+			when "00000010" => 
+				call2 : MainDispVgaRate
+				port map (
+					pi_clk => I_CLK,
+					pi_sw => I_SW,
+					po_hex => O_HEX
+				);
+ 
+			when others=> O_HEX <= "11111111111";
+		end case;
+	end process;
+	O_LED <= std_logic_vector (prog);
 end Behavioral;
 
