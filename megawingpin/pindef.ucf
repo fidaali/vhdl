@@ -1,0 +1,48 @@
+# Crystal Clock - use 32MHz onboard oscillator 
+NET I_CLK LOC = "P89" | IOSTANDARD = LVCMOS25 | PERIOD = 31.25ns;
+
+
+# Wing leds
+NET O_LED(7) LOC = "P5" | IOSTANDARD=LVTTL;
+NET O_LED(6) LOC = "P9" | IOSTANDARD=LVTTL;
+NET O_LED(5) LOC = "P10" | IOSTANDARD=LVTTL;
+NET O_LED(4) LOC = "P11" | IOSTANDARD=LVTTL;
+NET O_LED(3) LOC = "P12" | IOSTANDARD=LVTTL;
+NET O_LED(2) LOC = "P15" | IOSTANDARD=LVTTL;
+NET O_LED(1) LOC = "P16" | IOSTANDARD=LVTTL;
+NET O_LED(0) LOC = "P17" | IOSTANDARD=LVTTL;
+
+# Wing switches
+NET I_SW(7) LOC = "P91" | IOSTANDARD=LVTTL;
+NET I_SW(6) LOC = "P92" | IOSTANDARD=LVTTL;
+NET I_SW(5) LOC = "P94" | IOSTANDARD=LVTTL;
+NET I_SW(4) LOC = "P95" | IOSTANDARD=LVTTL;
+NET I_SW(3) LOC = "P98" | IOSTANDARD=LVTTL;
+NET I_SW(2) LOC = "P2" | IOSTANDARD=LVTTL;
+NET I_SW(1) LOC = "P3" | IOSTANDARD=LVTTL;
+NET I_SW(0) LOC = "P4" | IOSTANDARD=LVTTL;
+ 
+ # Wing1 Column B 
+ #NET O_VGA(0) LOC = "P85" | IOSTANDARD=LVTTL; # LogicStart vsync 
+ #NET O_VGA(1) LOC = "P83" | IOSTANDARD=LVTTL; # LogicStart hsync 
+ #NET O_VGA(2) LOC = "P78" | IOSTANDARD=LVTTL; # LogicStart blue1 
+ #NET O_VGA(3) LOC = "P71" | IOSTANDARD=LVTTL; # LogicStart blue2 
+ #NET O_VGA(4) LOC = "P68" | IOSTANDARD=LVTTL; # LogicStart green0 
+ #NET O_VGA(5) LOC = "P66" | IOSTANDARD=LVTTL; # LogicStart green1 
+ #NET O_VGA(6) LOC = "P63" | IOSTANDARD=LVTTL; # LogicStart green2 
+ #NET O_VGA(7) LOC = "P61" | IOSTANDARD=LVTTL; # LogicStart red0 
+ #NET O_VGA(8) LOC = "P58" | IOSTANDARD=LVTTL; # LogicStart red1
+ #NET O_VGA(9) LOC = "P54" | IOSTANDARD=LVTTL; # LogicStart red
+
+NET O_HEX_A(0) LOC = "P18"  | IOSTANDARD=LVTTL; # LogicStart 7Seg anode(0) 
+# NET O_HEXS1 LOC = "P23" | IOSTANDARD=LVTTL; # LogicStart 7seg Decimal Point 
+NET O_HEX_A(1) LOC = "P26" | IOSTANDARD=LVTTL; # LogicStart 7Seg anode(1) 
+NET O_HEX(4) LOC = "P33" | IOSTANDARD=LVTTL; # LogicStart 7seg segment E 
+NET O_HEX(5) LOC = "P35" | IOSTANDARD=LVTTL; # LogicStart 7seg segment F 
+NET O_HEX(2) LOC = "P40" | IOSTANDARD=LVTTL; # LogicStart 7seg segment C 
+NET O_HEX(3) LOC = "P53" | IOSTANDARD=LVTTL; # LogicStart 7seg segment D 
+NET O_HEX(0) LOC = "P57" | IOSTANDARD=LVTTL; # LogicStart 7seg segment A 
+NET O_HEX_A(2) LOC = "P60" | IOSTANDARD=LVTTL; # LogicStart 7seg anode(2) 
+NET O_HEX(6) LOC = "P62" | IOSTANDARD=LVTTL; # LogicStart 7seg segment G 
+NET O_HEX(1) LOC = "P65" | IOSTANDARD=LVTTL; # LogicStart 7seg segment B 
+NET O_HEX_A(3) LOC = "P67" | IOSTANDARD=LVTTL; # LogicStart 7seg anode(3)
