@@ -27,8 +27,8 @@ entity m8seg_refresh_hex is
 				pi_clk : in  STD_LOGIC;
 				pi_value : in  unsigned (15 downto 0);	
 				pi_refresh : in unsigned (2 downto 0);	
-				po_an : out  STD_LOGIC_VECTOR (3 downto 0);
-				po_ov :out  STD_LOGIC_VECTOR (3 downto 0)
+				po_q_num : out  STD_LOGIC_VECTOR (3 downto 0);
+				po_hex_val :out  STD_LOGIC_VECTOR (3 downto 0)
 			  );
 end m8seg_refresh_hex;
 
@@ -64,20 +64,20 @@ begin
 	begin	
 		case s is
 			when "00" => 
-				an <= "1110";
-				ov <= iv (3 downto 0);
+				po_q_num<= "1110";
+				po_hex_val<= iv (3 downto 0);
 			when "01" => 
-				an <= "1101";
-				ov <= iv (7 downto 4);
+				po_q_num<= "1101";
+				po_hex_val <= iv (7 downto 4);
 			when "10" => 
-				an <= "1011";
-				ov <= iv (11 downto 8);
+				po_q_num<= "1011";
+				po_hex_val <= iv (11 downto 8);
 			when "11" => 
-				an <= "0111";
-				ov <= iv (15 downto 12);		
+				po_q_num<= "0111";
+				po_hex_val <= iv (15 downto 12);		
 			when others => 
-				an <="1111";
-				ov <= "0000";
+				po_q_num<="1111";
+				po_hex_val <= "0000";
 		end case;
 
 	end process;

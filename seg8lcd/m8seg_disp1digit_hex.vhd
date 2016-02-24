@@ -29,6 +29,7 @@ end m8seg_disp1digit_hex;
 
 architecture Behavioral of m8seg_disp1digit_hex is
 
+signal seg : STD_LOGIC_VECTOR (6 downto 0);
 
 begin
 
@@ -172,6 +173,7 @@ begin
 			seg(5) <= '1';
 			seg(6) <= '1';			
 	end case;
+	po_seg <= seg;
 end process;
 
 end Behavioral;
