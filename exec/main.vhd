@@ -66,14 +66,14 @@ begin
 
 			call1 : MainLcdTest 
 			port map (
-				pi_clk => clock(0),
+				pi_clk => I_CLK,
 				pi_sw => ocaptsw,
 				po_hex => po_01_hex
 			);
 
 			call2 : MainDispVgaRate
 			port map (
-				pi_clk => clock(0),
+				pi_clk => I_CLK,
 				pi_sw => ocaptsw,
 				po_hex => po_02_hex
 			);

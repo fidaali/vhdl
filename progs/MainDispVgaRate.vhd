@@ -65,6 +65,9 @@ signal v_pixon : unsigned (31 downto 0) := (others => '0');
 signal v_h_sync: unsigned (31 downto 0) := (others => '0');
 signal v_v_sync : unsigned (31 downto 0) := (others => '0');
 
+signal b_v_sync : std_logic := '0';
+signal b_h_sync : std_logic := '0';
+
 
 
 signal aff : unsigned (31 downto 0) := (others => '0');
@@ -125,21 +128,30 @@ begin
 		if( rising_edge(pi_clk) and pixon = '1') then
 			c_pixon<=c_pixon+1;
 		end if;
-		if rising_edge(h_sync) then
-			c_h_sync<=c_h_sync+1;	
+		if (h_sync = '1') and (b_h_sync='1')  then
+			c_h_sync<=c_h_sync+1;
+			b_h_sync<='0';				
 		end if;
-		if rising_edge(v_sync) then
-			c_v_sync<=c_v_sync+1;	
+		if (v_sync = '1') and (b_v_sync='1') then
+			c_v_sync<=c_v_sync+1;
+			b_v_sync<='0';			
 		end if;
+		
+		if(v_sync='0') then b_v_sync<='1'; end if;
+		if(h_sync='0') then b_h_sync<='1'; end if;
 		
 		if(c_clk=32000000 and rising_edge(pi_clk)) then
 			v_pixon<=c_pixon;
 			v_h_sync<=c_h_sync;
 			v_v_sync<=c_v_sync;
+			
 		end if;				
 		
-		if(c_clk=32000000) then
+		if(c_clk=32000001) then
+			c_h_sync <="00000000000000000000000000000000";
+			c_v_sync <="00000000000000000000000000000000";
 			c_clk<="00000000000000000000000000000000";
+			c_pixon <="00000000000000000000000000000000";
 		end if;
 
 

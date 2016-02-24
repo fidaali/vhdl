@@ -37,47 +37,47 @@ architecture Behavioral of vga640rate is
 	signal divt : unsigned (8 downto 0) := (others => '0');
 	signal h : unsigned (10 downto 0) := (others => '0');
 	signal v : unsigned (10 downto 0) := (others => '0');
-	signal pixclk : STD_LOGIC;
-	signal endh : STD_LOGIC;
-	signal endv : STD_LOGIC;
+	signal pixclk : STD_LOGIC := '0' ;
+	signal b_pixclk : STD_LOGIC := '0' ;
+	--signal endh : STD_LOGIC;
+	--signal endv : STD_LOGIC;
 
 begin
-	calcpixclk : process ( pi_clk32mhz, divt)
+	calcpixclk : process ( pi_clk32mhz)
 		begin
 			if rising_edge(pi_clk32mhz) then
 				divt <= divt+1;
-			end if;
-			
-			if(divt = "011111111" ) then
-				pixclk<='1';
-			else
-				pixclk<='0';
-			end if;
-		end process;
-		
-	calch : process (pixclk)
-		begin 
-			if rising_edge(pixclk) then
+				
+				case divt(1 downto 0) is
+
+					when "01" => pixclk<='0';
+					when others => if  (pixclk='0') then
+							pixclk<='1';	
+							b_pixclk<='1';					
+						end if;					
+				end case;
+				
+				
+			if (b_pixclk='1') and (pixclk='1') then
+				b_pixclk<='0';
 				if h=799 then
 					h <= "00000000000";
-					endh <= '1';
+					--endh <= '1';
+					if v=524 then
+						v <= "00000000000";
+						--endv <= '1';
+					else
+						v <= v+1;
+						--endv <='0';
+					end if;					
 				else
 					h <= h+1;
-					endh <= '0';
+					--endh <= '0';
 				end if;
+			end if;				
+					
 			end if;
-		end process;
-	calcv : process (endh)
-		begin
-			if rising_edge(endh) then
-				if v=524 then
-					v <= "00000000000";
-					endv <= '1';
-				else
-					v <= v+1;
-					endv <='0';
-				end if;
-			end if;
+			
 		end process;
 		
 	calcsync : process (h,v)
