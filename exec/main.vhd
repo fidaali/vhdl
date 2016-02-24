@@ -26,7 +26,7 @@ entity main is
 		I_CLK : in STD_LOGIC ;
 		I_SW : in  STD_LOGIC_VECTOR (7 downto 0);
 		O_LED : out  STD_LOGIC_VECTOR (7 downto 0);
-	--	O_VGA : out  STD_LOGIC_VECTOR (0 downto 0);
+		O_VGA : out  STD_LOGIC_VECTOR (9 downto 0);
 		O_HEX : out  STD_LOGIC_VECTOR (10 downto 0)
 	);
 end main;
@@ -53,6 +53,14 @@ component MainDispVgaRate
 	 );
 end component;
 
+component MainVgaTest
+			port (
+				pi_clk : in STD_LOGIC ;
+				pi_sw: in  STD_LOGIC_VECTOR (7 downto 0);
+				po_vga : out STD_LOGIC_VECTOR (9 downto 0)
+			);	
+end component;
+
 	signal po_01_hex :  STD_LOGIC_VECTOR (10 downto 0);
 	signal po_02_hex :  STD_LOGIC_VECTOR (10 downto 0);
 	
@@ -77,6 +85,13 @@ begin
 				pi_sw => ocaptsw,
 				po_hex => po_02_hex
 			);
+			
+			call3 : MainVgaTest
+			port map (
+				pi_clk => I_CLK,
+				pi_sw => ocaptsw,
+				po_vga => O_VGA
+			);			
 			
 	process (I_CLK,clock) begin
 		if rising_edge(I_CLK) then

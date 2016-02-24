@@ -23,16 +23,16 @@ NET I_SW(1) LOC = "P3" | IOSTANDARD=LVTTL;
 NET I_SW(0) LOC = "P4" | IOSTANDARD=LVTTL;
  
  # Wing1 Column B 
- #NET O_VGA(0) LOC = "P85" | DRIVE = 2; # LogicStart vsync 
- #NET O_VGA(1) LOC = "P83" | DRIVE = 2; # LogicStart hsync 
- #NET O_VGA(2) LOC = "P78" | DRIVE = 2; # LogicStart blue1 
- #NET O_VGA(3) LOC = "P71" | DRIVE = 2; # LogicStart blue2 
- #NET O_VGA(4) LOC = "P68" | DRIVE = 2; # LogicStart green0 
- #NET O_VGA(5) LOC = "P66" | DRIVE = 2; # LogicStart green1 
- #NET O_VGA(6) LOC = "P63" | DRIVE = 2; # LogicStart green2 
- #NET O_VGA(7) LOC = "P61" | DRIVE = 2; # LogicStart red0 
- #NET O_VGA(8) LOC = "P58" | DRIVE = 2; # LogicStart red1
- #NET O_VGA(9) LOC = "P54" | DRIVE = 2; # LogicStart red
+ NET O_VGA(0) LOC = "P85" | IOSTANDARD = LVTTL; # LogicStart vsync 
+ NET O_VGA(1) LOC = "P83" | IOSTANDARD = LVTTL; # LogicStart hsync 
+ NET O_VGA(2) LOC = "P78" | IOSTANDARD = LVTTL; # LogicStart blue1 
+ NET O_VGA(3) LOC = "P71" | IOSTANDARD = LVTTL; # LogicStart blue2 
+ NET O_VGA(4) LOC = "P68" | IOSTANDARD = LVTTL; # LogicStart green0 
+ NET O_VGA(5) LOC = "P66" | IOSTANDARD = LVTTL; # LogicStart green1 
+ NET O_VGA(6) LOC = "P63" | IOSTANDARD = LVTTL; # LogicStart green2 
+ NET O_VGA(7) LOC = "P61" | IOSTANDARD = LVTTL; # LogicStart red0 
+ NET O_VGA(8) LOC = "P58" | IOSTANDARD = LVTTL; # LogicStart red1
+ NET O_VGA(9) LOC = "P54" | IOSTANDARD = LVTTL; # LogicStart red
 
 
 # NET O_HEXS1 LOC = "P23" | IOSTANDARD=LVTTL; # LogicStart 7seg Decimal Point 
