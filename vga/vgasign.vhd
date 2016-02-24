@@ -34,32 +34,22 @@ entity vga640rate is
 end vga640rate;
 
 architecture Behavioral of vga640rate is
-	signal divt : unsigned (8 downto 0) := (others => '0');
+	-- signal divt : unsigned (8 downto 0) := (others => '0');
 	signal h : unsigned (10 downto 0) := (others => '0');
 	signal v : unsigned (10 downto 0) := (others => '0');
 	signal pixclk : STD_LOGIC := '0' ;
-	signal b_pixclk : STD_LOGIC := '0' ;
+	-- signal b_pixclk : STD_LOGIC := '0' ;
 	--signal endh : STD_LOGIC;
 	--signal endv : STD_LOGIC;
+	
+	
 
 begin
-	calcpixclk : process ( pi_clk32mhz)
-		begin
-			if rising_edge(pi_clk32mhz) then
-				divt <= divt+1;
-				
-				case divt(1 downto 0) is
 
-					when "01" => pixclk<='0';
-					when others => if  (pixclk='0') then
-							pixclk<='1';	
-							b_pixclk<='1';					
-						end if;					
-				end case;
-				
-				
-			if (b_pixclk='1') and (pixclk='1') then
-				b_pixclk<='0';
+	pixclk<=pi_clk32mhz;
+	calcpixclk : process ( pixclk)
+		begin
+			if rising_edge(pixclk) then
 				if h=799 then
 					h <= "00000000000";
 					--endh <= '1';
@@ -73,15 +63,8 @@ begin
 				else
 					h <= h+1;
 					--endh <= '0';
-				end if;
-			end if;				
-					
-			end if;
-			
-		end process;
-		
-	calcsync : process (h,v)
-		begin
+				end if;				
+								
 			if (v=490 or v=491) then
 				po_v_sync <= '0';
 			else
@@ -98,11 +81,15 @@ begin
 				po_pixon <= '1';
 			else
 				po_pixon <= '0';
-			end if;
+			end if;			
+						
+			po_hpix <= std_logic_vector (h);
+			po_vpix <= std_logic_vector (v);			
+						
+		end if;			
 		end process;
+		
 
-	po_hpix <= std_logic_vector (h);
-	po_vpix <= std_logic_vector (v);
 
 end Behavioral;
 

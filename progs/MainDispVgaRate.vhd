@@ -93,7 +93,7 @@ begin
 				);	
 
 	
-	process(	v_sync, v_pixon, v_h_sync, v_v_sync,pi_sw, pi_sw) begin
+	process(	v_sync, v_pixon, v_h_sync, v_v_sync,pi_sw, pi_sw, c_clk) begin
 	
 			case (pi_sw) is
 				when "00000101"=> aff<=c_clk;
@@ -122,36 +122,38 @@ begin
 
 	) begin
 
-		if rising_edge(pi_clk) then
+		if (c_clk=32000000) then
+		
+			if rising_edge(pi_clk) then
+				v_pixon<=c_pixon;
+				v_h_sync<=c_h_sync;
+				v_v_sync<=c_v_sync;
+				
+				c_h_sync <="00000000000000000000000000000000";
+				c_v_sync <="00000000000000000000000000000000";
+				c_pixon <="00000000000000000000000000000000";	
+				
+				c_clk<="00000000000000000000000000000000";	
+			end if;
+		else		
+			if rising_edge (pi_clk) then
 			c_clk<=c_clk+1;
-		end if;
-		if( rising_edge(pi_clk) and pixon = '1') then
-			c_pixon<=c_pixon+1;
-		end if;
-		if (h_sync = '1') and (b_h_sync='1')  then
-			c_h_sync<=c_h_sync+1;
-			b_h_sync<='0';				
-		end if;
-		if (v_sync = '1') and (b_v_sync='1') then
-			c_v_sync<=c_v_sync+1;
-			b_v_sync<='0';			
-		end if;
-		
-		if(v_sync='0') then b_v_sync<='1'; end if;
-		if(h_sync='0') then b_h_sync<='1'; end if;
-		
-		if(c_clk=32000000 and rising_edge(pi_clk)) then
-			v_pixon<=c_pixon;
-			v_h_sync<=c_h_sync;
-			v_v_sync<=c_v_sync;
+			if(  pixon = '1') then
+				c_pixon<=c_pixon+1;
+			end if;
+			if (h_sync = '1') and (b_h_sync='1')  then
+				c_h_sync<=c_h_sync+1;
+				b_h_sync<='0';				
+			end if;
+			if (v_sync = '1') and (b_v_sync='1') then
+				c_v_sync<=c_v_sync+1;
+				b_v_sync<='0';			
+			end if;
 			
-		end if;				
-		
-		if(c_clk=32000001) then
-			c_h_sync <="00000000000000000000000000000000";
-			c_v_sync <="00000000000000000000000000000000";
-			c_clk<="00000000000000000000000000000000";
-			c_pixon <="00000000000000000000000000000000";
+			if(v_sync='0') then b_v_sync<='1'; end if;
+			if(h_sync='0') then b_h_sync<='1'; end if;			
+			
+			end if;
 		end if;
 
 
