@@ -4,11 +4,11 @@
 -- 
 -- Create Date:    17:15:52 02/17/2016 
 -- Design Name: 
--- Module Name:    disphalfw - Behavioral 
+-- Module Name:    - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
--- Description: 
+-- Description: convert 4 bit value to hex segment display 
 --
 -- Dependencies: 
 --
@@ -19,29 +19,22 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+entity m8seg_disp1digit_hex is
+    Port ( pi_value : in  unsigned (3 downto 0);
+           po_seg : out  STD_LOGIC_VECTOR (6 downto 0)
+	);
+end m8seg_disp1digit_hex;
 
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
-entity disphalfw is
-    Port ( v : in  STD_LOGIC_VECTOR (3 downto 0);
-           seg : out  STD_LOGIC_VECTOR (6 downto 0));
-end disphalfw;
-
-architecture Behavioral of disphalfw is
+architecture Behavioral of m8seg_disp1digit_hex is
 
 
 begin
 
-process(v)
+process(pi_value)
 begin
-	case v  is
+	case pi_value  is
 		when "0000" =>
 			seg(0) <= '0';
 			seg(1) <= '0';

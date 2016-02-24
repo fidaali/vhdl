@@ -4,11 +4,12 @@
 -- 
 -- Create Date:    17:40:15 02/17/2016 
 -- Design Name: 
--- Module Name:    dispselan - Behavioral 
+-- Module Name:    m8seg_refresh_hex - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
--- Description: 
+-- Description: choose one of the 4 display, depending on clock and refresh rate. 
+-- each display 4 bits of the 16 bits input as an Hex value 
 --
 -- Dependencies: 
 --
@@ -21,26 +22,17 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.numeric_std.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
-entity dispselan is
+entity m8seg_refresh_hex is
     Port ( 
-				clk : in  STD_LOGIC;
-				iv : in  STD_LOGIC_VECTOR (15 downto 0);	
-				swcommand : in STD_LOGIC_VECTOR (7 downto 0);	
-				an : out  STD_LOGIC_VECTOR (3 downto 0);
-				ov :out  STD_LOGIC_VECTOR (3 downto 0)
+				pi_clk : in  STD_LOGIC;
+				pi_value : in  unsigned (15 downto 0);	
+				pi_refresh : in unsigned (2 downto 0);	
+				po_an : out  STD_LOGIC_VECTOR (3 downto 0);
+				po_ov :out  STD_LOGIC_VECTOR (3 downto 0)
 			  );
-end dispselan;
+end m8seg_refresh_hex;
 
-architecture Behavioral of dispselan is
+architecture Behavioral of m8seg_refresh_hex is
 	signal s : unsigned (1 downto 0)  := (others => '0');
 	signal cc : unsigned (31 downto 0)  := (others => '0');
 
@@ -54,15 +46,15 @@ begin
 			if(cc(31)='1') then cc <= "00000000000000000000000000000000"; end if;
 			
 			case swcommand is
-				when "00000000" => s <= cc (27 downto 26);
-				when "10000000" => s <= cc (25 downto 24);
-				when "01000000" => s <= cc (23 downto 22);
-				when "11000000" => s <= cc (21 downto 20);
+				when "000" => s <= cc (27 downto 26);
+				when "100" => s <= cc (25 downto 24);
+				when "010" => s <= cc (23 downto 22);
+				when "110" => s <= cc (21 downto 20);
 				
-				when "00100000" => s <= cc (19 downto 18);
-				when "10100000" => s <= cc (17 downto 16);
-				when "01100000" => s <= cc (15 downto 14);
-				when "11100000" => s <= cc (13 downto 12);
+				when "001" => s <= cc (19 downto 18);
+				when "101" => s <= cc (17 downto 16);
+				when "011" => s <= cc (15 downto 14);
+				when "111" => s <= cc (13 downto 12);
 				when others => s <= cc (15 downto 14);
 			end case;
 		end if;
