@@ -31,7 +31,6 @@ end MainLcdTest;
 
 architecture Behavioral of MainLcdTest is
 	signal vv : unsigned (15 downto 0)  := (others => '0');
-	signal hv : STD_LOGIC_VECTOR (3 downto 0);
 	
 component m8seg_disp_hex   Port ( 
 	 	pi_clk : in STD_LOGIC ; -- clock 32 mhz

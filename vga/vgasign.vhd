@@ -42,9 +42,9 @@ architecture Behavioral of vga640rate is
 	signal endv : STD_LOGIC;
 
 begin
-	calcpixclk : process ( pi_clk32mhz)
+	calcpixclk : process ( pi_clk32mhz, divt)
 		begin
-			if rising_edge(clk32mhz) then
+			if rising_edge(pi_clk32mhz) then
 				divt <= divt+1;
 			end if;
 			

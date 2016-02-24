@@ -53,34 +53,53 @@ component MainDispVgaRate
 	 );
 end component;
 
+	signal po_01_hex :  STD_LOGIC_VECTOR (10 downto 0);
+	signal po_02_hex :  STD_LOGIC_VECTOR (10 downto 0);
+	
+	signal sw6 : std_logic;
+	signal sw7 : std_logic;
+	
+	signal osw6 : std_logic;
+	signal osw7 : std_logic;	
 
 begin
-	proces(I_SW) begin
-		if rising_edge(I_SW(7)) then
-			prog<= prog+1;		
-		end;
-		if rising_edge(I_SW(6)) then
-			prog<= prog-1;		
-		end;
+	sw6<= I_SW(6);
+	sw7<= I_SW(7);
+
+			call1 : MainLcdTest 
+			port map (
+				pi_clk => I_CLK,
+				pi_sw => I_SW,
+				po_hex => po_01_hex
+			);
+
+			call2 : MainDispVgaRate
+			port map (
+				pi_clk => I_CLK,
+				pi_sw => I_SW,
+				po_hex => po_02_hex
+			);
+	process (sw6,sw7,osw6,osw7) begin
+		if sw7 ='1' and osw7 = '0' then
+			prog<= prog+1;	
+			osw7<='1';
+		end if;
+		if sw7 = '1' and osw6 = '0' then
+			prog<= prog-1;	
+			osw6<='1';
+		end if;
+		
+		osw6<=sw6;
+		osw7<=sw7;
 
 	end process;
 	
-	process(I_CLK,I_SW) begin
+	process(I_CLK,I_SW, prog, po_01_hex,po_02_hex) begin
 		case (prog) is
-			when "00000001" => 
-				call1 : MainLcdTest 
-				port map (
-					pi_clk => I_CLK,
-					pi_sw => I_SW,
-					po_hex => O_HEX
-				);
-			when "00000010" => 
-				call2 : MainDispVgaRate
-				port map (
-					pi_clk => I_CLK,
-					pi_sw => I_SW,
-					po_hex => O_HEX
-				);
+			when "00000001" => O_HEX <= po_01_hex;
+
+			when "00000010" => O_HEX <= po_02_hex;
+
  
 			when others=> O_HEX <= "11111111111";
 		end case;
