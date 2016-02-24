@@ -25,7 +25,7 @@ entity m8seg_disp_hex is
    Port ( 
 	 	pi_clk : in STD_LOGIC ; -- clock 32 mhz
 		pi_value : in  unsigned (15 downto 0); -- value to display
-		po_hex : out  STD_LOGIC_VECTOR (9 downto 0); -- segment pin (6) and quadrant pin (4)
+		po_hex : out  STD_LOGIC_VECTOR (10 downto 0) -- segment pin (6) and quadrant pin (4)
 	 );
 end m8seg_disp_hex;
 
@@ -36,18 +36,19 @@ PORT (
 				pi_value : in  unsigned (15 downto 0);	
 				pi_refresh : in unsigned (2 downto 0);
 				po_q_num : out  STD_LOGIC_VECTOR (3 downto 0);
-				po_hex_val :out  STD_LOGIC_VECTOR (3 downto 0)
+				po_hex_val :out  unsigned (3 downto 0)
 );
 end component;
 
-signal hv : STD_LOGIC_VECTOR (3 downto 0);
+signal hv : unsigned (3 downto 0);
+signal hex : STD_LOGIC_VECTOR (10 downto 0) := (others => '0');
 
-component disphalfw
-PORT (
-			v : in  STD_LOGIC_VECTOR (3 downto 0) := (others => '0');
-           seg : out  STD_LOGIC_VECTOR (6 downto 0)
-);
+component m8seg_disp1digit_hex 
+    Port ( pi_value : in  unsigned (3 downto 0);
+           po_seg : out  STD_LOGIC_VECTOR (6 downto 0)
+	);
 end component;	
+
 
 begin
 	refresh : m8seg_refresh_hex 
@@ -55,7 +56,7 @@ begin
 			pi_clk => pi_clk,
 			pi_value => pi_value,
 			pi_refresh => "111",
-			po_q_num => v, 
+			po_q_num => hex(3 downto 0), 
 			po_hex_val=> hv
 			);
 	-- O_HEX_A <= "0000";
@@ -63,8 +64,8 @@ begin
 	disp1digit : m8seg_disp1digit_hex 
 		port map (
 	   		pi_value => hv,
-			po_seg => po_hex (9 downto 4)
+				po_seg => hex (10 downto 4)
 			);	
-	po_hex_val (3 downto 0) <= v;
+	po_hex <= hex;
 end Behavioral;
 

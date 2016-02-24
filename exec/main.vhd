@@ -35,7 +35,7 @@ entity main is
 		I_SW : in  STD_LOGIC_VECTOR (7 downto 0);
 		O_LED : out  STD_LOGIC_VECTOR (7 downto 0);
 	--	O_VGA : out  STD_LOGIC_VECTOR (0 downto 0);
-		O_HEX : out  STD_LOGIC_VECTOR (9 downto 0);
+		O_HEX : out  STD_LOGIC_VECTOR (10 downto 0)
 	);
 end main;
 
@@ -47,24 +47,22 @@ architecture Behavioral of main is
 	signal hv : STD_LOGIC_VECTOR (3 downto 0);
 	
 component MainLcdTest
-PORT (
+    Port ( 
 	 	pi_clk : in STD_LOGIC ;
 		pi_sw : in  STD_LOGIC_VECTOR (7 downto 0);
-		po_led : out  STD_LOGIC_VECTOR (7 downto 0);
-	--	po_vga : out  STD_LOGIC_VECTOR (0 downto 0);
-		po_hex : out  STD_LOGIC_VECTOR (6 downto 0);
-);
+		po_hex : out  STD_LOGIC_VECTOR (10 downto 0) -- 6 bit segments then 4 bit quadrant
+	 );
 end component;	
 
 
 begin
 
-	call0 : _MainLcdTest -- MainLcdTest 
+	call0 : MainLcdTest 
 		port map (
 			pi_clk => I_CLK,
 			pi_sw => I_SW,
-			po_hex => O_HEX,
+			po_hex => O_HEX
 			);
-	O_LED <= I_CLK;
+	O_LED <= I_SW;
 end Behavioral;
 

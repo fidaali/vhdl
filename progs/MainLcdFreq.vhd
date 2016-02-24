@@ -25,18 +25,18 @@ entity MainLcdTest is
     Port ( 
 	 	pi_clk : in STD_LOGIC ;
 		pi_sw : in  STD_LOGIC_VECTOR (7 downto 0);
-		po_hex : out  STD_LOGIC_VECTOR (9 downto 0); -- 6 bit segments then 4 bit quadrant
+		po_hex : out  STD_LOGIC_VECTOR (10 downto 0) -- 6 bit segments then 4 bit quadrant
 	 );
 end MainLcdTest;
 
-architecture Behavioral of MainLcdFreq is
+architecture Behavioral of MainLcdTest is
 	signal vv : unsigned (15 downto 0)  := (others => '0');
 	signal hv : STD_LOGIC_VECTOR (3 downto 0);
 	
 component m8seg_disp_hex   Port ( 
 	 	pi_clk : in STD_LOGIC ; -- clock 32 mhz
 		pi_value : in  unsigned (15 downto 0); -- value to display
-		po_hex : out  STD_LOGIC_VECTOR (9 downto 0); -- segment pin (6) and quadrant pin (4)
+		po_hex : out  STD_LOGIC_VECTOR (10 downto 0) -- segment pin (6) and quadrant pin (4)
 	 );
 end component;
 

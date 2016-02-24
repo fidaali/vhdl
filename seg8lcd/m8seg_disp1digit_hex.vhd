@@ -33,17 +33,17 @@ signal seg : STD_LOGIC_VECTOR (6 downto 0);
 
 begin
 
-process(pi_value)
+process(pi_value,seg)
 begin
 	case pi_value  is
-		when "0000" =>
-			seg(0) <= '0';
-			seg(1) <= '0';
-			seg(2) <= '0';
-			seg(3) <= '0';
-			seg(4) <= '0';
-			seg(5) <= '0';
-			seg(6) <= '1';
+	--	when "0000" =>
+		--	seg(0) <= '0';
+		--	seg(1) <= '0';
+		--	seg(2) <= '0';
+		--	seg(3) <= '0';
+		--	seg(4) <= '0';
+		--	seg(5) <= '0';
+		--	seg(6) <= '1';
 		when "0001" =>
 			seg(0) <= '1';
 			seg(1) <= '0';
@@ -165,12 +165,12 @@ begin
 			seg(5) <= '0';
 			seg(6) <= '0';			
 		when others =>
-			seg(0) <= '1';
-			seg(1) <= '1';
-			seg(2) <= '1';
-			seg(3) <= '1';
-			seg(4) <= '1';
-			seg(5) <= '1';
+			seg(0) <= '0';
+			seg(1) <= '0';
+			seg(2) <= '0';
+			seg(3) <= '0';
+			seg(4) <= '0';
+			seg(5) <= '0';
 			seg(6) <= '1';			
 	end case;
 	po_seg <= seg;

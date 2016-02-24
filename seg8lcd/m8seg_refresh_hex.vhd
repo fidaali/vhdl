@@ -28,25 +28,26 @@ entity m8seg_refresh_hex is
 				pi_value : in  unsigned (15 downto 0);	
 				pi_refresh : in unsigned (2 downto 0);	
 				po_q_num : out  STD_LOGIC_VECTOR (3 downto 0);
-				po_hex_val :out  STD_LOGIC_VECTOR (3 downto 0)
+				po_hex_val :out  unsigned (3 downto 0)
 			  );
 end m8seg_refresh_hex;
 
 architecture Behavioral of m8seg_refresh_hex is
 	signal s : unsigned (1 downto 0)  := (others => '0');
 	signal cc : unsigned (31 downto 0)  := (others => '0');
+	signal hex_val : unsigned (3 downto 0);
 
 begin
 
 
-	process (clk, swcommand)
+	process (pi_clk, pi_refresh)
 	begin
-		if rising_edge(clk) then
+		if rising_edge(pi_clk) then
 			cc <= cc+1;
 			if(cc(31)='1') then cc <= "00000000000000000000000000000000"; end if;
 			
-			case swcommand is
-				when "000" => s <= cc (27 downto 26);
+			case pi_refresh is
+				-- when "000" => s <= cc (27 downto 26);
 				when "100" => s <= cc (25 downto 24);
 				when "010" => s <= cc (23 downto 22);
 				when "110" => s <= cc (21 downto 20);
@@ -55,30 +56,32 @@ begin
 				when "101" => s <= cc (17 downto 16);
 				when "011" => s <= cc (15 downto 14);
 				when "111" => s <= cc (13 downto 12);
-				when others => s <= cc (15 downto 14);
+			  when others => s <= cc (27 downto 26);
 			end case;
 		end if;
 	end process;
 	
-	process (iv,s)
+	process (pi_value,s,hex_val)
 	begin	
 		case s is
-			when "00" => 
-				po_q_num<= "1110";
-				po_hex_val<= iv (3 downto 0);
+		--	when "00" => 
+		--		po_q_num<= "1110";
+		--		hex_val<= pi_value (3 downto 0);
 			when "01" => 
 				po_q_num<= "1101";
-				po_hex_val <= iv (7 downto 4);
+				hex_val <= pi_value (7 downto 4);
 			when "10" => 
 				po_q_num<= "1011";
-				po_hex_val <= iv (11 downto 8);
+				hex_val <= pi_value (11 downto 8);
 			when "11" => 
 				po_q_num<= "0111";
-				po_hex_val <= iv (15 downto 12);		
+				hex_val <= pi_value (15 downto 12);		
 			when others => 
-				po_q_num<="1111";
-				po_hex_val <= "0000";
+				po_q_num<= "1110";
+				hex_val<= pi_value (3 downto 0);
 		end case;
+		
+		po_hex_val <=  hex_val;
 
 	end process;
 	
