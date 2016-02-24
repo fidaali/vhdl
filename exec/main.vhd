@@ -35,8 +35,7 @@ entity main is
 		I_SW : in  STD_LOGIC_VECTOR (7 downto 0);
 		O_LED : out  STD_LOGIC_VECTOR (7 downto 0);
 	--	O_VGA : out  STD_LOGIC_VECTOR (0 downto 0);
-		O_HEX : out  STD_LOGIC_VECTOR (6 downto 0);
-		O_HEX_A : out  STD_LOGIC_VECTOR (3 downto 0)
+		O_HEX : out  STD_LOGIC_VECTOR (9 downto 0);
 	);
 end main;
 
@@ -47,38 +46,25 @@ architecture Behavioral of main is
 	signal vv : STD_LOGIC_VECTOR (15 downto 0)  := (others => '0');
 	signal hv : STD_LOGIC_VECTOR (3 downto 0);
 	
-component MainLcdFreq
+component MainLcdTest
 PORT (
 	 	pi_clk : in STD_LOGIC ;
 		pi_sw : in  STD_LOGIC_VECTOR (7 downto 0);
 		po_led : out  STD_LOGIC_VECTOR (7 downto 0);
 	--	po_vga : out  STD_LOGIC_VECTOR (0 downto 0);
 		po_hex : out  STD_LOGIC_VECTOR (6 downto 0);
-		po_hex_a : out  STD_LOGIC_VECTOR (3 downto 0)
 );
 end component;	
 
-component MainAffFreqVga is
-PORT (
-	 	pi_clk : in STD_LOGIC ;
-		pi_sw : in  STD_LOGIC_VECTOR (7 downto 0);
-		po_led : out  STD_LOGIC_VECTOR (7 downto 0);
-	--	po_vga : out  STD_LOGIC_VECTOR (0 downto 0);
-		po_hex : out  STD_LOGIC_VECTOR (6 downto 0);
-		po_hex_a : out  STD_LOGIC_VECTOR (3 downto 0)
-);
-end component;
-	
 
 begin
 
-	call0 : _MainAffFreqVga -- MainLcdFreq 
+	call0 : _MainLcdTest -- MainLcdTest 
 		port map (
 			pi_clk => I_CLK,
 			pi_sw => I_SW,
-		   po_led => O_LED,
 			po_hex => O_HEX,
-		   po_hex_a => O_HEX_A
 			);
+	O_LED <= I_CLK;
 end Behavioral;
 

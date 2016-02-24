@@ -4,11 +4,11 @@
 -- 
 -- Create Date:    23:06:17 02/21/2016 
 -- Design Name: 
--- Module Name:    MainLcdFreq - Behavioral 
+-- Module Name:    MainLcdTest - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
--- Description: 
+-- Description: double the 8 switch bit into an 16 bit value and display it 
 --
 -- Dependencies: 
 --
@@ -19,71 +19,38 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
-entity MainLcdFreq is
+entity MainLcdTest is
     Port ( 
 	 	pi_clk : in STD_LOGIC ;
 		pi_sw : in  STD_LOGIC_VECTOR (7 downto 0);
-		po_led : out  STD_LOGIC_VECTOR (7 downto 0);
-	--	po_vga : out  STD_LOGIC_VECTOR (0 downto 0);
-		po_hex : out  STD_LOGIC_VECTOR (6 downto 0);
-		po_hex_a : out  STD_LOGIC_VECTOR (3 downto 0)
+		po_hex : out  STD_LOGIC_VECTOR (9 downto 0); -- 6 bit segments then 4 bit quadrant
 	 );
-end MainLcdFreq;
+end MainLcdTest;
 
 architecture Behavioral of MainLcdFreq is
-	signal vv : STD_LOGIC_VECTOR (15 downto 0)  := (others => '0');
+	signal vv : unsigned (15 downto 0)  := (others => '0');
 	signal hv : STD_LOGIC_VECTOR (3 downto 0);
 	
-component dispselan
-PORT (
-				clk : in  STD_LOGIC;
-				iv : in  STD_LOGIC_VECTOR (15 downto 0);	
-				swcommand : in STD_LOGIC_VECTOR (7 downto 0);
-				an : out  STD_LOGIC_VECTOR (3 downto 0);
-				ov :out  STD_LOGIC_VECTOR (3 downto 0)
-);
+component m8seg_disp_hex   Port ( 
+	 	pi_clk : in STD_LOGIC ; -- clock 32 mhz
+		pi_value : in  unsigned (15 downto 0); -- value to display
+		po_hex : out  STD_LOGIC_VECTOR (9 downto 0); -- segment pin (6) and quadrant pin (4)
+	 );
 end component;
-
-component disphalfw
-PORT (
-			v : in  STD_LOGIC_VECTOR (3 downto 0) := (others => '0');
-           seg : out  STD_LOGIC_VECTOR (6 downto 0)
-);
-end component;	
 
 begin
 	process(pi_sw) begin
-			vv (7 downto 0) <= pi_sw;
-			vv (15 downto 8) <= pi_sw;
+			vv (7 downto 0) <= unsigned (pi_sw);
+			vv (15 downto 8) <= unsigned (pi_sw);
 	end process;
-	uelan : dispselan 
+	disp : m8seg_disp_hex 
 		port map (
-			clk => pi_clk,
-			iv => vv,
-		   an => po_hex_a,
-			swcommand => pi_sw,
-			ov => hv
+			pi_clk => pi_clk,
+			pi_value => vv,
+			po_hex => po_hex 
 			);
-	-- O_HEX_A <= "0000";
-			
-	uhalfw : disphalfw 
-		port map (
-		   v => hv,
-			-- v => vv (3 downto 0),
-			seg => po_hex
-			);	
-
-	po_led <= vv (7 downto 0);
 			
 
 end Behavioral;

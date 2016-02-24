@@ -27,7 +27,7 @@ entity m8seg_disp_hex is
 		pi_value : in  unsigned (15 downto 0); -- value to display
 		po_hex : out  STD_LOGIC_VECTOR (9 downto 0); -- segment pin (6) and quadrant pin (4)
 	 );
-end AffLcd16;
+end m8seg_disp_hex;
 
 architecture Behavioral of m8seg_disp_hex is
 component m8seg_refresh_hex 
