@@ -34,8 +34,8 @@ architecture Behavioral of MainDispVgaRate is
 component vga640rate 
     Port ( 
 	pi_clk32mhz : in  STD_LOGIC;
-   po_hpix : out STD_LOGIC_VECTOR (10 downto 0); -- current line number for display
-	po_vpix : out STD_LOGIC_VECTOR (10 downto 0); -- current column number for display
+   po_hpix : out unsigned (10 downto 0); -- current line number for display
+	po_vpix : out unsigned (10 downto 0); -- current column number for display
 	po_pixon : out STD_LOGIC; -- when 1 display is on time to choose the colors when 0 black pixel only
 	po_h_sync : out STD_LOGIC; -- horizontal retrace signal :: 1 when tracing back to left 
 	po_v_sync : out STD_LOGIC -- vertical retrace signal :: 1 when tracing back top 
@@ -50,8 +50,8 @@ component m8seg_disp_hex   Port (
 end component;
 
 
-signal	hpix : STD_LOGIC_VECTOR (10 downto 0); -- current line number for display
-signal	vpix : STD_LOGIC_VECTOR (10 downto 0); -- current column number for display
+signal	hpix : unsigned (10 downto 0); -- current line number for display
+signal	vpix : unsigned (10 downto 0); -- current column number for display
 signal	pixon : STD_LOGIC; -- when 1 display is on time to choose the colors when 0 black pixel only
 signal	h_sync : STD_LOGIC; -- horizontal retrace signal :: 1 when tracing back to left 
 signal	v_sync : STD_LOGIC; -- vertical retrace signal :: 1 when tracing back top 

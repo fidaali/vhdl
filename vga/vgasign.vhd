@@ -24,8 +24,8 @@ use IEEE.numeric_std.ALL;
 entity vga640rate is
     Port ( 
 	pi_clk32mhz : in  STD_LOGIC;
-        po_hpix : out STD_LOGIC_VECTOR (10 downto 0); -- current line number for display
-	po_vpix : out STD_LOGIC_VECTOR (10 downto 0); -- current column number for display
+   po_hpix : out unsigned (10 downto 0); -- current line number for display
+	po_vpix : out unsigned (10 downto 0); -- current column number for display
 	po_pixon : out STD_LOGIC; -- when 1 display is on time to choose the colors when 0 black pixel only
 	po_h_sync : out STD_LOGIC; -- horizontal retrace signal :: 1 when tracing back to left 
 	po_v_sync : out STD_LOGIC -- vertical retrace signal :: 1 when tracing back top 
@@ -83,8 +83,8 @@ begin
 				po_pixon <= '0';
 			end if;			
 						
-			po_hpix <= std_logic_vector (h);
-			po_vpix <= std_logic_vector (v);			
+			po_hpix <= (h);
+			po_vpix <= (v);			
 						
 		end if;			
 		end process;
