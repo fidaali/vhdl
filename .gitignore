@@ -1,2 +1,7 @@
 *
 !*.vhd
+!progs
+!exec
+!vga
+!seg8lcd
+!megawinpin
