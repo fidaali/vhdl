@@ -67,7 +67,7 @@ begin
 	
 	process(	pixon, hpix, vpix, pi_sw) begin
 		if(pixon='1' ) and ( 
-		( (hpix /= 1) and (hpix /= 5) and (hpix /= 320) and (hpix /= 638) )
+		( (hpix /= 1) and (hpix /= 16) and (hpix /= 32) and (hpix /= 64) and (hpix /= 320) and (hpix /= 638) )
 		and
 		( (vpix /= 1) and  (vpix /= 478) )
 		
