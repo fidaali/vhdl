@@ -77,13 +77,13 @@ begin
 				po_h_sync <= '1';
 			end if;
 			
-			if(h < 640 and v <480) then
+			if(h < 648 and v <480) and (h>7) then
 				po_pixon <= '1';
 			else
 				po_pixon <= '0';
 			end if;			
 						
-			po_hpix <= (h);
+			po_hpix <= (h-8);
 			po_vpix <= (v);			
 						
 		end if;			
