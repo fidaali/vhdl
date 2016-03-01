@@ -50,6 +50,16 @@ architecture Behavioral of main2 is
 		LOCKED_OUT : OUT std_logic
 		);
 	END COMPONENT;
+	
+component virtcursor
+			port (
+			pi_clk32mhz : in  STD_LOGIC;
+   		pi_hardpin : in STD_LOGIC_VECTOR ( 4 downto 0 );
+
+   		po_xpos : out unsigned ( 10 downto 0);
+   		po_ypos : out unsigned ( 10 downto 0)
+			);	
+end component;
 
 component vgacursor
 			port (
@@ -77,6 +87,14 @@ begin
 		CLK0_OUT => open,
 		LOCKED_OUT => open
 	);
+	
+	Inst_virtcursor: virtcursor PORT MAP(
+			pi_clk32mhz => pi_clock25mhz,
+   		pi_hardpin => (not I_JOY),
+
+   		po_xpos => const_jx,
+   		po_ypos => const_jy
+	);	
 
 			
 	call3 : vgacursor
@@ -88,7 +106,7 @@ begin
 		po_vga => O_VGA
 	);			
 	
-	O_LED <= I_SW or ("000" & I_JOY);
+	O_LED <= I_SW or ("000" & not I_JOY);
 	O_HEX <= "11111111111";
 	O_AUDIO <= '0';
 	

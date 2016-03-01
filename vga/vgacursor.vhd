@@ -77,10 +77,10 @@ begin
 		
 			if(pi_joyx /= hpix or pi_joyy /= vpix) then
 			
-				if(pi_joyx=hpix) then
+				if(pi_joyx=hpix and pi_joyy /= vpix) then
 					po_vga( 9 downto 2)  <= "00000000";
 				else 
-					if(pi_joyy=vpix) then
+					if(pi_joyy=vpix and pi_joyx /= hpix ) then
 							po_vga( 9 downto 2)  <= "11111111";
 						else
 							po_vga( 9 downto 2) <= couleur;
