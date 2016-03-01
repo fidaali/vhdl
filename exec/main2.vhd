@@ -25,9 +25,13 @@ entity main2 is
     Port (
 		I_CLK : in STD_LOGIC ;
 		I_SW : in  STD_LOGIC_VECTOR (7 downto 0);
+		I_JOY : in  STD_LOGIC_VECTOR (4 downto 0);
 		O_LED : out  STD_LOGIC_VECTOR (7 downto 0);
 		O_VGA : out  STD_LOGIC_VECTOR (9 downto 0);
+		O_AUDIO : out  std_logic ;
+
 		O_HEX : out  STD_LOGIC_VECTOR (10 downto 0)
+
 	);
 end main2;
 
@@ -47,14 +51,21 @@ architecture Behavioral of main2 is
 		);
 	END COMPONENT;
 
-component MainVgaTest
+component vgacursor
 			port (
 				pi_clk : in STD_LOGIC ;
-				pi_sw: in  STD_LOGIC_VECTOR (7 downto 0);
+				pi_joyx : in  unsigned (10 downto 0);
+				pi_joyy : in  unsigned (10 downto 0);
+				pi_joyon : in STD_LOGIC;
 				po_vga : out STD_LOGIC_VECTOR (9 downto 0)
 			);	
 end component;
 	signal pi_clock25mhz : STD_LOGIC;
+	
+	signal const_jx : unsigned (10 downto 0) := "00000100000";
+	signal const_jy : unsigned (10 downto 0) := "00001000000";
+
+
 
 begin
 
@@ -68,15 +79,18 @@ begin
 	);
 
 			
-	call3 : MainVgaTest
+	call3 : vgacursor
 	port map (
 		pi_clk => pi_clock25mhz,
-		pi_sw => "00000111",
+		pi_joyx => const_jx,
+		pi_joyy => const_jy,
+		pi_joyon => '1',
 		po_vga => O_VGA
 	);			
 	
-	O_LED <= I_SW;
+	O_LED <= I_SW or ("000" & I_JOY);
 	O_HEX <= "11111111111";
+	O_AUDIO <= '0';
 	
 end Behavioral;
 

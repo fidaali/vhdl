@@ -47,3 +47,11 @@ NET O_HEX(2) LOC = "P60" | IOSTANDARD=LVTTL; # LogicStart 7seg anode(2)
 NET O_HEX(10) LOC = "P62" | IOSTANDARD=LVTTL; # LogicStart 7seg segment G 
 NET O_HEX(5) LOC = "P65" | IOSTANDARD=LVTTL; # LogicStart 7seg segment B 
 NET O_HEX(3) LOC = "P67" | IOSTANDARD=LVTTL; # LogicStart 7seg anode(3)
+
+NET "O_AUDIO" LOC = "P41" | IOSTANDARD=LVTTL; # LogicStart audio 
+NET "I_JOY<1>" LOC = "P36" | IOSTANDARD=LVTTL; # LogicStart joystick right 
+NET "I_JOY<3>" LOC = "P34" | IOSTANDARD=LVTTL; # LogicStart joystick left 
+NET "I_JOY<2>" LOC = "P32" | IOSTANDARD=LVTTL; # LogicStart joystick down 
+NET "I_JOY<0>" LOC = "P25" | IOSTANDARD=LVTTL; # LogicStart Joystick up 
+NET "I_JOY<4>" LOC = "P22" | IOSTANDARD=LVTTL; # LogicStart Joystick Select
+
