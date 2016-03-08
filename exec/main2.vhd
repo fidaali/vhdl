@@ -70,6 +70,12 @@ component vgacursor
 				po_vga : out STD_LOGIC_VECTOR (9 downto 0)
 			);	
 end component;
+
+
+
+
+
+
 	signal pi_clock25mhz : STD_LOGIC;
 	
 	signal const_jx : unsigned (10 downto 0) := "00000100000";
@@ -95,6 +101,7 @@ begin
    		po_xpos => const_jx,
    		po_ypos => const_jy
 	);	
+
 
 			
 	call3 : vgacursor

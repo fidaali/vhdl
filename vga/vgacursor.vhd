@@ -44,6 +44,18 @@ component vga640rate
 			  );
 end component;
 
+component ModVga3Neigh 
+    Port ( 
+    	pi_clk : in STD_LOGIC;
+		pi_sw : in  STD_LOGIC_VECTOR (7 downto 0);
+		pi_hsync : in STD_LOGIC;
+		pi_vsync : in STD_LOGIC;
+		pi_on : in STD_LOGIC;
+		pi_pixh : unsigned (10 downto 0);
+		po_vga : out  STD_LOGIC_VECTOR (7 downto 0)
+	 );
+end component;
+
 
 signal	hpix : unsigned (10 downto 0); -- current line number for display
 signal	vpix : unsigned (10 downto 0); -- current column number for display
@@ -68,15 +80,21 @@ begin
 	po_vga(0) <= v_sync;
 	po_vga(1) <= h_sync;
 	
-	process(	pixon, hpix, vpix, pi_joyx, pi_joyy) begin
-
+	call3 : ModVga3Neigh 
+    Port map ( 
+    	pi_clk => pi_clk,
+		pi_sw => "00000000",
+		pi_hsync => h_sync,
+		pi_vsync => v_sync,
+		pi_on => pixon,
+		pi_pixh => hpix,
+		po_vga => couleur
+	);
 	
+	process(	pixon, hpix, vpix, pi_joyx, pi_joyy) begin
 		if(pixon='1' )  then
-		
-		couleur <= std_logic_vector(hpix (7 downto 0)) xor std_logic_vector(vpix (7 downto 0));
-		
+		--couleur <= std_logic_vector(hpix (7 downto 0)) xor std_logic_vector(vpix (7 downto 0));
 			if(pi_joyx /= hpix or pi_joyy /= vpix) then
-			
 				if(pi_joyx=hpix and pi_joyy /= vpix) then
 					po_vga( 9 downto 2)  <= "00000000";
 				else 
@@ -87,11 +105,9 @@ begin
 					end if;
 				end if;
 			end if;
-
 		else
 			po_vga( 9 downto 2) <= "00000000";
 		end if;
-			
 	end process;
 	
 
