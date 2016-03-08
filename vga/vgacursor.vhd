@@ -64,8 +64,8 @@ signal	h_sync : STD_LOGIC; -- horizontal retrace signal :: 1 when tracing back t
 signal	v_sync : STD_LOGIC; -- vertical retrace signal :: 1 when tracing back top 
 
 	signal couleur  :std_logic_vector (7 downto 0);
-
-begin
+	
+	begin
 
 		calc : vga640rate 
 		port map (

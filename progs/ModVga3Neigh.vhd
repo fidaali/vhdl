@@ -38,6 +38,14 @@ architecture Behavioral of ModVga3Neigh is
 signal hsync : std_logic := '0';
 signal vsync : std_logic := '0';
 signal outp : unsigned (7 downto 0);
+signal ligne : unsigned (7 downto 0);
+
+
+signal model : std_logic_vector (639 downto 0) := (others => '0');
+signal curr : std_logic_vector (639 downto 0) := (others => '0');
+signal n : std_logic_vector (639 downto 0) := (others => '0');
+
+
 
 begin
 	process (pi_clk, pi_vsync, pi_hsync) begin
@@ -46,18 +54,48 @@ begin
 			vsync <= '1';
 		else
 			if(vsync = '1' ) then
+				model<= model xor model;
+				model(320 downto 320) <= "1";
+				model(400 downto 400) <= "1";
+				model(100 downto 100) <= "1";
+			
 				outp <= "00000000";
+				ligne <= "00000000";
 				vsync<='0';
+				curr<=model;
 			else
 
 			end if;
 
 			if(pi_hsync = '0') then
 				hsync <= '1';
+				n<=curr;
 			else
-				if(pi_on = '1' and hsync='1' ) then
-					outp <= outp +1;
-					hsync<='0';
+				if(pi_on = '1') then
+					if( hsync='1' ) then
+						
+						ligne <= ligne +1;
+						
+						
+						curr<= 
+							(( n (638 downto 0) & "0" )
+							or
+								n)
+							xor
+							( "0" & n (639 downto 1) )
+							;	
+
+						curr (7 downto 0) <= std_logic_vector (ligne);
+						
+						hsync<='0';
+								
+					end if;
+
+					if(curr (to_integer( pi_pixh )) = '1') then
+						outp <= ligne;-- "11100111";
+					else
+						outp <= "00000000";
+					end if;					
 					
 				end if;
 
